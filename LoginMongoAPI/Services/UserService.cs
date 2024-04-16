@@ -6,6 +6,7 @@ using MongoDB.Driver;
 using TodoApiMongo.StaticClasses;
 using LoginMongoAPI.helpers;
 using System.Data;
+using TwoFactorAuthNet;
 
 namespace LoginMongoAPI.Models
 {
@@ -124,6 +125,7 @@ namespace LoginMongoAPI.Models
             await DBCollections.userCollection.UpdateOneAsync(filter, update);
         }
 
+
         public async Task<string> GetSecret(string email)
         {
             try
@@ -146,6 +148,21 @@ namespace LoginMongoAPI.Models
         }
 
 
+
+        public async Task<bool> ValidateCode(string email, string code)
+        {
+            try
+            {
+                string secret = await GetSecret(email);
+
+                var tfa = new TwoFactorAuth("Test", 6, 30, Algorithm.SHA256);
+                return tfa.VerifyCode(secret, code);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
 
     }

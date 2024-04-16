@@ -25,5 +25,6 @@ namespace LoginMongoAPI.Interfaces
         public Task SetSecret(string email, string secret);
 
         public Task<string> GetSecret(string email);
+        public Task<bool> ValidateCode(string email, string code);
     }
 }

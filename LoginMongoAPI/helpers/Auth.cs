@@ -12,6 +12,25 @@ namespace LoginMongoAPI.helpers
 {
     public static class AuthenticationHelper
     {
+        // VALIDATE EMAIL FORMAT
+        public static bool ValidateEmail(string email)
+        {
+            var trimmedEmail = email.Trim();
+            if (trimmedEmail.EndsWith("."))
+            {
+                return false;
+            }
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == trimmedEmail;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         // GENERATE PASSWORD HASH
         public static string GeneratePasswordHash(string password) => BCrypt.Net.BCrypt.HashPassword(password) ?? "Error";
